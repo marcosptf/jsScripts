@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Zeros in JavaScript</title>
+		<meta charset="utf-8" />
+		<meta name="description" content="The quirky behavior of various falsey (and truthy) values in JavaScript" />
+		<meta name="google" content="notranslate" />
+		<style type="text/css">
+			body,
+			html {
+				padding: 0;
+				margin: 0;
+			}
+
+			.zeros {
+				margin: 10px;
+				border-collapse: separate;
+				border-spacing: 2px;
+				font-family: monospace;
+			}
+
+			.zeros th,
+			.zeros td {
+				border-width: 0 1px 1px 0;
+				border-color: #aaa;
+				border-style: solid;
+				padding: 5px;
+				text-align: right;
+			}
+
+			.zeros thead th,
+			.zeros tbody th,
+			.zeros thead td {
+				font-size: 12px;
+				font-weight: bold;
+				white-space: nowrap;
+			}
+
+			.zeros thead th {
+				font-size: 20px;
+				color: #005;
+			}
+
+			.zeros tbody td {
+				font-size: 10px;
+			}
+
+			.err {
+				color: #fff;
+				background-color: #d44;
+			}
+
+			.true {
+				color: #050;
+				background-color: #efe;
+			}
+
+			.false {
+				color: #500;
+				background-color: #fee;
+			}
+
+			.number {
+				color: #550;
+				background-color: #ffe;
+			}
+
+			.string {
+				color: #055;
+				background-color: #eff;
+			}
+		</style>
+	</head>
+	<body>
+		<dl><dt>2013-11-05:</dt><dd>A kind fellow named Ilya informed me that <tt>{}+foo</tt> is probably parsed by JavaScript as <tt>{};+foo</tt>. To mitigate the issue, all operations are now being wrapped in parentheses before evaluation (e.g. <tt>({}+foo)</tt>.)</dd></dl>
+
+		<script type="text/javascript">
+			// <![CDATA[
+				(function() {
+					var baseValues = ["0", "'0'", "[0]", "[]", "{}", "''", "null", "[null]", "undefined", "NaN", "[NaN]", "'a'", "Infinity", "1", "'1'", "[1]", "true", "false", "'true'", "'false'"];
+					var operators = ['==', '===', '+', '*'];
+					for (var i in operators) {
+						document.write('<table class="zeros">');
+						document.write('<thead>');
+						document.write('<tr>');
+						document.write('<th>' + operators[i] + '</th>');
+						for (var k in baseValues) {
+							document.write('<td>' + baseValues[k] + '</td>');
+						}
+						document.write('</tr>');
+						document.write('</thead>');
+						document.write('<tbody>');
+						for (var j in baseValues) {
+							document.write('<tr>');
+							document.write('<th>' + baseValues[j] + '</th>');
+							for (var k in baseValues) {
+                        var result = '';
+                        var classXmlAttribute = '';
+                        var operationString = baseValues[j] + ' ' + operators[i] + ' ' +  baseValues[k];
+								document.write('<td title="' + operationString + '">');
+								try {
+									result = eval('(' + operationString + ')');
+									if (typeof result === 'string') {
+                              classXmlAttribute = ' class="string"';
+									}
+									else if (typeof result === 'boolean') {
+                              classXmlAttribute = ' class="' + result + '"';
+									}
+									else if (typeof result === 'number') {
+                              classXmlAttribute = ' class="number"';
+									}
+								}
+								catch (e) {
+                           classXmlAttribute = ' class="err"';
+                           result = 'Err!';
+								}
+                        document.write('<span' + classXmlAttribute + '>' + result + '</span>');
+								document.write('</td>');
+							}
+							document.write('</tr>');
+						}
+						document.write('</tbody>');
+						document.write('</table>');
+					}
+				})();
+			// ]]>
+		</script>
+	</body>
+</html>
