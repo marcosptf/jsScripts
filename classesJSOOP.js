@@ -8,19 +8,12 @@ phonebookEntry.phone = function() {
 };
 phonebookEntry.phone();
 
-
-
-
-
 /* outro exemplo de classe literal */
 var me = {
 	name:"jsname",
 	age:29
 }
-
 console.log("my name is "+me.name+" and my age is "+me.age);
-
-
 
 /* exemplo de classe construtora */
 var me = new Object();
